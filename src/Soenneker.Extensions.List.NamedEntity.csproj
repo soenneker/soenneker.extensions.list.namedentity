@@ -42,7 +42,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Soenneker.Entities.Named" Version="2.1.628" />
+      <PackageReference Include="Soenneker.Entities.Named" Version="2.1.629" />
       <PackageReference Include="Soenneker.Extensions.List.IdNamePair" Version="2.1.362" />
     </ItemGroup>
 </Project>
