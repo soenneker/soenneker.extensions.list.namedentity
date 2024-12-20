@@ -1,13 +1,13 @@
-using Soenneker.Tests.FixturedUnit;
+using Soenneker.Tests.Unit;
 using Xunit;
-
 
 namespace Soenneker.Extensions.List.NamedEntity.Tests;
 
-[Collection("Collection")]
-public class ListNamedEntityExtensionTests : FixturedUnitTest
+public class ListNamedEntityExtensionTests : UnitTest
 {
-    public ListNamedEntityExtensionTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    [Fact]
+    public void Default()
     {
+
     }
 }
