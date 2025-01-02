@@ -14,7 +14,7 @@
         <AssemblyName>Soenneker.Extensions.List.NamedEntity</AssemblyName>
         <PackageId>Soenneker.Extensions.List.NamedEntity</PackageId>
         <PackageTags>extensions list namedentity named entity extension listnamedentityextension csharp dotnet c# .net</PackageTags>
-        <Copyright>Copyright © 2024 Jake Soenneker</Copyright>
+        <Copyright>Copyright © 2024-2025 Jake Soenneker</Copyright>
         <Authors>Jake Soenneker</Authors>
         <Company>https://soenneker.com</Company>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
