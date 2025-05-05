@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Extensions.List.NamedEntity
+﻿# Contributing to Soenneker.Extensions.List.NamedEntity
 
 We're excited that you're interested in contributing!
 
