@@ -39,7 +39,7 @@ public static class ListNamedEntityExtension
     /// <returns>A list of unique IdNamePair objects with the Id and Name properties from the INamedEntity objects.</returns>
     public static List<Dtos.IdNamePair.IdNamePair> ToUniqueIdNamePairs(this IList<INamedEntity> values)
     {
-        var uniqueIds = new HashSet<string>();
+        var uniqueIds = new HashSet<string>(values.Count);
         var idNamePairs = new List<Dtos.IdNamePair.IdNamePair>(values.Count);
 
         for (var i = 0; i < values.Count; i++)
