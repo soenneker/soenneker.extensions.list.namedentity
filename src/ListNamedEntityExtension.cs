@@ -1,30 +1,42 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using Soenneker.Entities.Named.Abstract;
 
 namespace Soenneker.Extensions.List.NamedEntity;
 
 /// <summary>
-/// A collection of helpful List{NamedEntity} extension methods
+/// A collection of helpful <see cref="List{T}"/> extension methods for working with <see cref="INamedEntity"/> lists.
 /// </summary>
 public static class ListNamedEntityExtension
 {
     /// <summary>
-    /// Converts a list of INamedEntity objects to a list of IdNamePair objects.
+    /// Converts a list of <see cref="INamedEntity"/> objects to a list of <c>IdNamePair</c> objects.
     /// </summary>
-    /// <param name="values">The list of INamedEntity objects to convert.</param>
-    /// <returns>A list of IdNamePair objects with the Id and Name properties from the INamedEntity objects.</returns>
-    public static List<Dtos.IdNamePair.IdNamePair> ToIdNamePairs(this IList<INamedEntity> values)
+    /// <param name="values">The list of <see cref="INamedEntity"/> objects to convert.</param>
+    /// <returns>
+    /// A list of <c>IdNamePair</c> objects with the <c>Id</c> and <c>Name</c> copied from each entity.
+    /// </returns>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> is <see langword="null"/>.</exception>
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    public static List<Dtos.IdNamePair.IdNamePair> ToIdNamePairs(this List<INamedEntity> values)
     {
-        List<Dtos.IdNamePair.IdNamePair> result = new List<Dtos.IdNamePair.IdNamePair>(values.Count);
+        if (values is null)
+            throw new ArgumentNullException(nameof(values));
 
-        for (var i = 0; i < values.Count; i++)
+        int count = values.Count;
+        var result = new List<Dtos.IdNamePair.IdNamePair>(count);
+
+        for (int i = 0; i < count; i++)
         {
-            INamedEntity namedEntity = values[i];
+            var e = values[i];
 
             result.Add(new Dtos.IdNamePair.IdNamePair
             {
-                Id = namedEntity.Id,
-                Name = namedEntity.Name
+                Id = e.Id,
+                Name = e.Name
             });
         }
 
@@ -32,30 +44,42 @@ public static class ListNamedEntityExtension
     }
 
     /// <summary>
-    /// Converts a list of INamedEntity objects to a list of unique IdNamePair objects. <para/>
-    /// Only unique Ids are included in the resulting list.
+    /// Converts a list of <see cref="INamedEntity"/> objects to a list of unique <c>IdNamePair</c> objects.
+    /// Only the first occurrence of each <c>Id</c> is included.
     /// </summary>
-    /// <param name="values">The list of INamedEntity objects to convert.</param>
-    /// <returns>A list of unique IdNamePair objects with the Id and Name properties from the INamedEntity objects.</returns>
-    public static List<Dtos.IdNamePair.IdNamePair> ToUniqueIdNamePairs(this IList<INamedEntity> values)
+    /// <param name="values">The list of <see cref="INamedEntity"/> objects to convert.</param>
+    /// <returns>
+    /// A list of unique <c>IdNamePair</c> objects based on distinct <c>Id</c> values.
+    /// </returns>
+    /// <exception cref="ArgumentNullException"><paramref name="values"/> is <see langword="null"/>.</exception>
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    public static List<Dtos.IdNamePair.IdNamePair> ToUniqueIdNamePairs(this List<INamedEntity> values)
     {
-        var uniqueIds = new HashSet<string>(values.Count);
-        var idNamePairs = new List<Dtos.IdNamePair.IdNamePair>(values.Count);
+        if (values is null)
+            throw new ArgumentNullException(nameof(values));
 
-        for (var i = 0; i < values.Count; i++)
+        int count = values.Count;
+
+        // Ordinal comparison is correct + fastest for identifiers
+        var seenIds = new HashSet<string>(capacity: count, comparer: StringComparer.Ordinal);
+        var result = new List<Dtos.IdNamePair.IdNamePair>(count);
+
+        for (int i = 0; i < count; i++)
         {
-            INamedEntity pair = values[i];
+            var e = values[i];
+            string id = e.Id;
 
-            if (uniqueIds.Add(pair.Id)) // Add returns false if the item is already in the set
+            if (seenIds.Add(id))
             {
-                idNamePairs.Add(new Dtos.IdNamePair.IdNamePair
+                result.Add(new Dtos.IdNamePair.IdNamePair
                 {
-                    Id = pair.Id,
-                    Name = pair.Name
+                    Id = id,
+                    Name = e.Name
                 });
             }
         }
 
-        return idNamePairs;
+        return result;
     }
 }
